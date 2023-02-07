@@ -10,19 +10,11 @@ app.use(express.static(publicPathDirectory))
 const server = http.createServer(app)
 const io = socketio(server)
 
-let count = 1
-const message = "Hello Chat App"
-
 // Khởi tạo kết nối server với client
 io.on('connection', (socket) => {
-  console.log('a user connected');
-
-  socket.emit("Send count to client",count)
   
-  // Nghe sự kiện từ client trả về server
-  socket.on("Send event to server",(value)=>{
-    count+=value
-    io.emit("Send count to client",count)
+  socket.on("Send message from client to server",(messageText)=>{
+    io.emit("Send message from server to client",messageText)
   })
 
   socket.on('disconnect', () => {

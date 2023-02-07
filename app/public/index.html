@@ -10,22 +10,12 @@
 
 <body>
     <h1>Chat</h1>
-    <p>Value count: <span id="count">1</span></p>
-    <button id="btn_count">Add Count +1</button>
+    <form id="form-messages">
+        <input type="text" id="input-messages"/>
+        <button type="submit">Send</button>
+    </form>
 
     <script src="/socket.io/socket.io.js"></script>
-    <script>
-        var socket = io();
-
-        // Nhận sự kiện từ server trả về client
-        socket.on("Send count to client",(count)=>{
-            document.getElementById("count").innerHTML = count
-        })
-
-        document.getElementById("btn_count").addEventListener("click",()=>{
-            // Gửi sự kiện từ client lên server
-            socket.emit("Send event to server",1)
-        })
-    </script>
+    <script src="./js/chat-client.js"></script>
 </body>
 </html>
