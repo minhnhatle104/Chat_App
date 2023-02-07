@@ -22,7 +22,7 @@ io.on('connection', (socket) => {
   // Nghe sự kiện từ client trả về server
   socket.on("Send event to server",(value)=>{
     count+=value
-    socket.emit("Send count to client",count)
+    io.emit("Send count to client",count)
   })
 
   socket.on('disconnect', () => {
