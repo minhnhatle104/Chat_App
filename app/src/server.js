@@ -14,6 +14,11 @@ const io = socketio(server)
 // Khởi tạo kết nối server với client
 io.on('connection', (socket) => {
   
+  socket.emit("Send message from server to client","Welcome to cyberchat")
+  socket.broadcast.emit("Send message from server to client",
+  "A Client enters chat room"
+  )
+
   socket.on("Send message from client to server",(messageText,callback)=>{
     const filter = new Filter()
     if(filter.isProfane(messageText)){
