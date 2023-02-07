@@ -28,6 +28,11 @@ io.on('connection', (socket) => {
     callback()
   })
 
+  socket.on("Share location from client to server",({latitude,longitude})=>{
+    const linkLocation = `https://www.google.com/maps?q=${latitude},${longitude}`
+    io.emit("Share location from server to client",linkLocation)
+  })
+
   socket.on('disconnect', () => {
     console.log('user disconnected');
   });
