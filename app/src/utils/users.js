@@ -1,4 +1,4 @@
-const userList = [
+let userList = [
     {
         id:"1",
         username:"Ben White",
@@ -10,9 +10,10 @@ const userList = [
         room:"fe01",
     }
 ]
-
+const addNewUser = (newUser) => userList = [...userList,newUser]
 const getUserList = (room) => userList.filter(user => user.room === room)
 
 module.exports = {
     getUserList,
+    addNewUser,
 }
