@@ -5,7 +5,7 @@ const http = require("http")
 const socketio = require('socket.io')
 const Filter = require("bad-words")
 const { createMessages } = require('./utils/create-messages')
-const { getUserList, addNewUser } = require('./utils/users')
+const { getUserList, addNewUser, removeUser } = require('./utils/users')
 
 const publicPathDirectory = path.join(__dirname, "../public");
 app.use(express.static(publicPathDirectory))
@@ -50,13 +50,16 @@ io.on('connection', (socket) => {
     addNewUser(newUser)
     // Xử lý userList
     io.to(room).emit("send user list from server to client",getUserList(room))
-  
+    
+    socket.on('disconnect', () => {
+      removeUser(socket.id)
+      io.to(room).emit("send user list from server to client",getUserList(room))
+      console.log('user disconnected');
+    });
   })
 
   
-  socket.on('disconnect', () => {
-    console.log('user disconnected');
-  });
+  
 });
 
 
