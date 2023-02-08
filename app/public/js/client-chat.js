@@ -44,4 +44,11 @@ socket.emit("join room from client to server",{room,username})
 // Nhận user list từ server
 socket.on("send user list from server to client",(userList)=>{
     console.log(userList)
+    let contentHTML = ""
+    userList.map((user)=>{
+        contentHTML += `
+            <li class="app__item-user">${user.username}</li>   
+        `
+    })
+    document.getElementById("app__list-user--content").innerHTML = contentHTML
 })

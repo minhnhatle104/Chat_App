@@ -16,7 +16,6 @@ const io = socketio(server)
 // Khởi tạo kết nối server với client
 io.on('connection', (socket) => {
 
- 
   socket.on("join room from client to server",({room,username})=>{
     socket.join(room)
 
