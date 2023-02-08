@@ -5,6 +5,7 @@ const http = require("http")
 const socketio = require('socket.io')
 const Filter = require("bad-words")
 const { createMessages } = require('./utils/create-messages')
+const { getUserList } = require('./utils/users')
 
 const publicPathDirectory = path.join(__dirname, "../public");
 app.use(express.static(publicPathDirectory))
@@ -40,6 +41,9 @@ io.on('connection', (socket) => {
       const linkLocation = `https://www.google.com/maps?q=${latitude},${longitude}`
       io.to(room).emit("Share location from server to client", createMessages(linkLocation))
     })
+
+    // Xử lý userList
+    io.to(room).emit("send user list from server to client",getUserList(room))
   
   })
 

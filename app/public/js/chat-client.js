@@ -40,3 +40,8 @@ const params = Qs.parse(queryString,{
 const {room,username} = params
 
 socket.emit("join room from client to server",{room,username})
+
+// Nhận user list từ server
+socket.on("send user list from server to client",(userList)=>{
+    console.log(userList)
+})
