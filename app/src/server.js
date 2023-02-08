@@ -15,27 +15,35 @@ const io = socketio(server)
 // Khởi tạo kết nối server với client
 io.on('connection', (socket) => {
 
-  socket.emit("Send message from server to client", "Welcome to cyberchat")
-  socket.broadcast.emit("Send message from server to client",
-    createMessages("A Client enters chat room")
-  )
+ 
+  socket.on("join room from client to server",({room,username})=>{
+    socket.join(room)
 
-  socket.on("Send message from client to server", (messageText, callback) => {
-    const filter = new Filter()
-    if (filter.isProfane(messageText)) {
-      return callback("Message is not suitable")
-    }
-
-    const messages = createMessages(messageText)
-    io.emit("Send message from server to client", messages)
-    callback()
+    // Welcome
+    socket.emit("Send message from server to client", `Welcome to cyberchat, room ${room}`)
+    socket.broadcast.to(room).emit("Send message from server to client",
+      createMessages(`${username} enters chat room`)
+    )
+  
+    // Chat
+    socket.on("Send message from client to server", (messageText, callback) => {
+      const filter = new Filter()
+      if (filter.isProfane(messageText)) {
+        return callback("Message is not suitable")
+      }
+  
+      io.to(room).emit("Send message from server to client", createMessages(messageText))
+      callback()
+    })
+  
+    socket.on("Share location from client to server", ({ latitude, longitude }) => {
+      const linkLocation = `https://www.google.com/maps?q=${latitude},${longitude}`
+      io.to(room).emit("Share location from server to client", createMessages(linkLocation))
+    })
+  
   })
 
-  socket.on("Share location from client to server", ({ latitude, longitude }) => {
-    const linkLocation = `https://www.google.com/maps?q=${latitude},${longitude}`
-    io.emit("Share location from server to client", createMessages(linkLocation))
-  })
-
+  
   socket.on('disconnect', () => {
     console.log('user disconnected');
   });

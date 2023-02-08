@@ -37,4 +37,6 @@ const queryString = location.search
 const params = Qs.parse(queryString,{
     ignoreQueryPrefix:true
 })
-console.log(params)
+const {room,username} = params
+
+socket.emit("join room from client to server",{room,username})
