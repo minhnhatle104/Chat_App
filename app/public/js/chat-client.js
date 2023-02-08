@@ -31,3 +31,10 @@ socket.on("Send message from server to client",(messageText)=>{
 socket.on("Share location from server to client",(linkLocation)=>{
     console.log("Location: ",linkLocation)
 })
+
+// Xử lý query string
+const queryString = location.search
+const params = Qs.parse(queryString,{
+    ignoreQueryPrefix:true
+})
+console.log(params)
