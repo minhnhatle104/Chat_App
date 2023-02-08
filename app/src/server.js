@@ -5,7 +5,7 @@ const http = require("http")
 const socketio = require('socket.io')
 const Filter = require("bad-words")
 const { createMessages } = require('./utils/create-messages')
-const { getUserList, addNewUser, removeUser } = require('./utils/users')
+const { getUserList, addNewUser, removeUser,findUser } = require('./utils/users')
 
 const publicPathDirectory = path.join(__dirname, "../public");
 app.use(express.static(publicPathDirectory))
@@ -20,9 +20,9 @@ io.on('connection', (socket) => {
     socket.join(room)
 
     // Welcome
-    socket.emit("Send message from server to client", `Welcome to cyberchat, room ${room}`)
+    socket.emit("Send message from server to client", createMessages(`Welcome to cyberchat, room ${room}`,"Admin"))
     socket.broadcast.to(room).emit("Send message from server to client",
-      createMessages(`${username} enters chat room`)
+      createMessages(`${username} enters chat room`,"Admin")
     )
   
     // Chat
@@ -31,14 +31,16 @@ io.on('connection', (socket) => {
       if (filter.isProfane(messageText)) {
         return callback("Message is not suitable")
       }
-  
-      io.to(room).emit("Send message from server to client", createMessages(messageText))
+      
+      const user = findUser(socket.id)
+      io.to(room).emit("Send message from server to client", createMessages(messageText,user.username))
       callback()
     })
   
     socket.on("Share location from client to server", ({ latitude, longitude }) => {
+      const user = findUser(socket.id)
       const linkLocation = `https://www.google.com/maps?q=${latitude},${longitude}`
-      io.to(room).emit("Share location from server to client", createMessages(linkLocation))
+      io.to(room).emit("Share location from server to client", createMessages(linkLocation,user.username))
     })
 
     const newUser = {

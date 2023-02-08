@@ -32,7 +32,7 @@ socket.on("Send message from server to client", (message) => {
     let messageHTML = `
             <div class="message-item">
             <div class="message__row1">
-            <p class="message__name">${username}</p>
+            <p class="message__name">${message.username}</p>
             <p class="message__date">${message.createAt}</p>
             </div>
             <div class="message__row2">
