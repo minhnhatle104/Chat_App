@@ -20,9 +20,9 @@ io.on('connection', (socket) => {
     socket.join(room)
 
     // Welcome
-    socket.emit("Send message from server to client", createMessages(`Welcome to cyberchat, room ${room}`,"Admin"))
+    socket.emit("Send message from server to client", createMessages(`Welcome to cyberchat, room ${room}`,"Admin","-1"))
     socket.broadcast.to(room).emit("Send message from server to client",
-      createMessages(`${username} enters chat room`,"Admin")
+      createMessages(`${username} enters chat room`,"Admin","-1")
     )
   
     // Chat
@@ -33,14 +33,14 @@ io.on('connection', (socket) => {
       }
       
       const user = findUser(socket.id)
-      io.to(room).emit("Send message from server to client", createMessages(messageText,user.username))
+      io.to(room).emit("Send message from server to client", createMessages(messageText,user.username,socket.id))
       callback()
     })
   
     socket.on("Share location from client to server", ({ latitude, longitude }) => {
       const user = findUser(socket.id)
       const linkLocation = `https://www.google.com/maps?q=${latitude},${longitude}`
-      io.to(room).emit("Share location from server to client", createMessages(linkLocation,user.username))
+      io.to(room).emit("Share location from server to client", createMessages(linkLocation,user.username,socket.id))
     })
 
     const newUser = {

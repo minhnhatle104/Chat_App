@@ -27,12 +27,15 @@ document.getElementById("btn-share-location").addEventListener("click", (e) => {
 socket.on("Send message from server to client", (message) => {
     console.log("Client: ", message)
     
+    const checkIsSend = socket.id === message.userId ? "check_is_send" : ""
+    const userName = checkIsSend === "" ? message.username : "Me"
+
     let contentHTML = document.getElementById("app__messages").innerHTML
     // Hiển thị giao diện lên màn hình
     let messageHTML = `
-            <div class="message-item">
+            <div class="message-item ${checkIsSend}">
             <div class="message__row1">
-            <p class="message__name">${message.username}</p>
+            <p class="message__name">${userName}</p>
             <p class="message__date">${message.createAt}</p>
             </div>
             <div class="message__row2">
@@ -49,12 +52,16 @@ socket.on("Send message from server to client", (message) => {
 
 socket.on("Share location from server to client", (message) => {
     console.log("Location: ", message)
+
+    const checkIsSend = socket.id === message.userId ? "check_is_send" : ""
+    const userName = checkIsSend === "" ? message.username : "Me"
+
     let contentHTML = document.getElementById("app__messages").innerHTML
     // Hiển thị giao diện lên màn hình
     let messageHTML = `
-            <div class="message-item">
+            <div class="message-item ${checkIsSend}">
             <div class="message__row1">
-            <p class="message__name">${message.username}</p>
+            <p class="message__name">${userName}</p>
             <p class="message__date">${message.createAt}</p>
             </div>
             <div class="message__row2">
