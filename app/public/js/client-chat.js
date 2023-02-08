@@ -47,8 +47,26 @@ socket.on("Send message from server to client", (message) => {
     document.getElementById("app__messages").innerHTML = contentRender
 })
 
-socket.on("Share location from server to client", (linkLocation) => {
-    console.log("Location: ", linkLocation)
+socket.on("Share location from server to client", (message) => {
+    console.log("Location: ", message)
+    let contentHTML = document.getElementById("app__messages").innerHTML
+    // Hiển thị giao diện lên màn hình
+    let messageHTML = `
+            <div class="message-item">
+            <div class="message__row1">
+            <p class="message__name">${message.username}</p>
+            <p class="message__date">${message.createAt}</p>
+            </div>
+            <div class="message__row2">
+            <p class="message__content">
+                <a href="${message.messagesText}" target="_blank">${message.username}'s current location</a>
+            </p>
+            </div>
+        </div>
+    `
+    let contentRender = contentHTML + messageHTML
+
+    document.getElementById("app__messages").innerHTML = contentRender
 })
 
 // Xử lý query string
