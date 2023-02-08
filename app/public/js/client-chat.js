@@ -26,6 +26,8 @@ document.getElementById("btn-share-location").addEventListener("click", (e) => {
 
 socket.on("Send message from server to client", (message) => {
     console.log("Client: ", message)
+    
+    let contentHTML = document.getElementById("app__messages").innerHTML
     // Hiển thị giao diện lên màn hình
     let messageHTML = `
             <div class="message-item">
@@ -40,8 +42,9 @@ socket.on("Send message from server to client", (message) => {
             </div>
         </div>
     `
+    let contentRender = contentHTML + messageHTML
 
-    document.getElementById("app__messages").innerHTML = messageHTML
+    document.getElementById("app__messages").innerHTML = contentRender
 })
 
 socket.on("Share location from server to client", (linkLocation) => {
